@@ -2,11 +2,26 @@ import React from 'react';
 import HelloWorld from './HelloWorld'; 
 import CounterBox from './components/CounterBox';
 import useCounter from './hooks/useCounter';
-function App() {
+import { NameProvider, useName } from './context/NameContext';
+function NameInput() {
+  const { name, setName } = useName();
+
+  return (
+    <div style={{ marginBottom: '30px' }}>
+      <label>Enter your name: </label>
+      <input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        style={{ padding: '5px', fontSize: '16px' }}
+      />
+    </div>
+  );
+}
+function MainApp() {
   const count = useCounter(0);
   const age = useCounter(25);
   const entries = useCounter(0);
-
+  const {name} = useName();
   return (
     <div style={{
       display: 'flex',
@@ -16,7 +31,7 @@ function App() {
       paddingTop: '50px',
       fontFamily: 'Segoe UI, sans-serif'
     }}>
-      <h1>👋 Hello World – Let’s Re-Learn Again!</h1>
+      <h1>👋 Hello World – {name}!</h1>
 
       <CounterBox
         label="Count"
@@ -44,5 +59,14 @@ function App() {
     </div>
   );
 }
+
+function App() {
+  return (
+    <NameProvider>
+      <MainApp />
+    </NameProvider>
+  );
+}
+
 
 export default App;
